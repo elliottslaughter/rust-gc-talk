@@ -1,4 +1,6 @@
+template = template.tex
+
 all: talk.pdf
 
-%.pdf: %.md template.tex
-	pandoc --template template.tex --to beamer $< -o $@
+%.pdf: %.md $(template)
+	pandoc --latex-engine xelatex --template template.tex --to beamer $< -o $@
