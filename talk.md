@@ -26,21 +26,19 @@
 
 \only<3>{
 
-    import vec::append_mut;
-
-    fn twiddle(nums: @[int]) {
-        append_mut(nums, [4, 5, 6]);
+    fn pointer_to_freed_memory() -> &int {
+        let x = @3;
+        return &*x;
     }
 
     fn main () {
-        let nums = @[1, 2, 3];
-        twiddle(nums);
+        pointer_to_freed_memory();
     }
 
     // Results in this error:
-    // safe.rs:4:15: 4:19 error: illegal borrow: creating mutable alias to aliasable, immutable memory
-    // safe.rs:4     append_mut(nums, [4, 5, 6]);
-    //                          ^~~~
+    // safe.rs:3:12: 3:14 error: illegal borrow: managed value would have to be rooted for the anonymous lifetime #1 defined on the block at 1:37, but can only be rooted for the block at 1:37
+    // safe.rs:3     return &*x;
+    //                       ^~
 
 }
 
