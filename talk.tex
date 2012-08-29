@@ -41,6 +41,8 @@
    morestring=[b]'%
   }[keywords,comments,strings,directives]%
 
+\lstset{showstringspaces=false}
+
 \title{High-Performance Garbage Collection in Rust}
 \author{Elliott Slaughter \textless{}slaughter@cs.stanford.edu\textgreater{}}
 \date{August 30, 2012}
@@ -57,7 +59,8 @@
 %\frame{\titlepage}
 \maketitle
 
-\begin{frame}\frametitle{Or, How to Hack LLVM's GC Support to Allow Us
+\begin{frame}
+\Large\center{Or, How to Hack LLVM's GC Support to Allow Us
 to Start Thinking About High-Performance GC in Rust}
 \end{frame}
 
@@ -69,9 +72,11 @@ to Start Thinking About High-Performance GC in Rust}
   \item<alert@4> Concurrent
 \end{itemize}
 
+\begin{overlayarea}{\textwidth}{\textheight}
 \only<2>{\lstinputlisting[language=Rust]{example1.rs}}
 \only<3>{\lstinputlisting[language=Rust]{example2.rs}}
 \only<4>{\lstinputlisting[language=Rust]{example3.rs}}
+\end{overlayarea}
 
 \end{frame}
 

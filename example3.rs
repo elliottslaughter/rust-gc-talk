@@ -1,14 +1,13 @@
 use std;
-import io::println;
-import std::par::map;
+import std::par;
 
-fn expensive_task(name: ~str) -> ~str {
+fn mangle(name: ~str) -> ~str {
     return fmt!("Hi, %s!", name);
 }
 
-fn main () {
-    for map(~[~"Spam", ~"Eggs", ~"Ham"],
-            expensive_task).each |s| {
-        println(s);
+fn main() {
+    let names = ~[~"Spam", ~"Eggs", ~"Ham"];
+    for par::map(names, mangle).each |s| {
+        io::println(s);
     }
 }

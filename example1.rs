@@ -1,7 +1,5 @@
-import io::println;
-
-fn main () {
+fn main() {
     for [1, 2, 3].each |i| {
-        println(i.to_str());
+        io::println(i.to_str());
     }
 }
