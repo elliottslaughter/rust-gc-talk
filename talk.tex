@@ -1,4 +1,4 @@
-\documentclass[ignorenonframetext,]{beamer}
+\documentclass[ignorenonframetext,12pt]{beamer}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
 \usepackage{fixltx2e} % provides \textsubscript
@@ -14,7 +14,6 @@
   \fi
 \fi
 \usepackage{listings}
-\usepackage{color}
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{6pt plus 2pt minus 1pt}
@@ -28,6 +27,8 @@
 % Customize presentation defaults
 \setbeamercolor{titlelike}{fg=black}
 \setbeamercolor{itemize item}{fg=black}
+\setbeamercolor{itemize subitem}{fg=black}
+\setbeamercolor{itemize subsubitem}{fg=black}
 \setbeamertemplate{navigation symbols}{}
 
 % Custom language highlighting for Rust
@@ -64,12 +65,11 @@ showstringspaces=false%
 \frame{\titlepage}
 
 \begin{frame}
-\Large\center{Or, How to Hack LLVM's GC Support to Allow Us
-to Start Thinking About High-Performance GC in Rust}
+\Large\center{ Or, How to Hack LLVM's Support to Allow Us to Start
+  Thinking About High-Performance Garbage Collection in Rust }
 \end{frame}
 
-\begin{frame}[fragile]\frametitle{Rust in 3 Examples}
-
+\begin{frame}[fragile]\frametitle{Rust in 3 Contrived Examples}
 \begin{itemize}
   \item<alert@2> Fast
   \item<alert@3> Safe
@@ -79,23 +79,60 @@ to Start Thinking About High-Performance GC in Rust}
 \begin{overlayarea}{\textwidth}{\textheight}
 \only<2>{\lstinputlisting[language=Rust]{example1.rs}}
 \only<3>{\lstinputlisting[language=Rust]{example2.rs}}
-\only<4>{\lstinputlisting[language=Rust]{example3.rs}}
+\only<4>{\small\lstinputlisting[language=Rust]{example3.rs}}
 \end{overlayarea}
-
 \end{frame}
 
-\begin{frame}\frametitle{Why GC?}
-
+\begin{frame}\frametitle{Rust Memory Model}
 \begin{itemize}
-  \item Rust already has reference-counted types
-  \item Reference counting might not be as fast as you'd think
-  \item Secret weapon: Rust's memory model guarrantees isolation
+  \item Exchange heap
+  \begin{itemize}
+    \item Similar to C++11 \texttt{std::unique\_ptr}
+    \item Exclusive ownership
+    \item Move semantics
+  \end{itemize}
+  \item Task-local heap
+  \begin{itemize}
+    \item Similar to C++ \texttt{std::shared\_ptr}
+    \item Reference counted
+    \item Can't move between tasks
+  \end{itemize}
 \end{itemize}
+\end{frame}
 
+\begin{frame}\frametitle{Why Garbage Collection?}
+\begin{itemize}
+  \item Exchange heap
+  \begin{itemize}
+    \item Requires locking
+    \item Sometimes awkward
+  \end{itemize}
+  \item Task-local heap
+  \begin{itemize}
+    \item Reference counting might not be as fast as you'd think
+    \item Reference counting leaks cyclical references
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Secret Weapon(s)}
+\begin{itemize}
+  \item Only need to collect the task-local heap
+  \begin{itemize}
+    \item No locks
+    \item Never stop the world
+  \end{itemize}
+  \item Optional, opt-in garbage collection
+  \begin{itemize}
+    \item Static guarrantee that tasks never GC unless opted-in
+  \end{itemize}
+\end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{Doesn't LLVM already support GC?}
-
+\begin{itemize}
+  \item Yes, but\ldots
+\end{itemize}
 \end{frame}
 
 \end{document}
