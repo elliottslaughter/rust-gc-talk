@@ -1,0 +1,124 @@
+\documentclass[ignorenonframetext,]{beamer}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifxetex
+  \usepackage{fontspec,xltxtra,xunicode}
+  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+\else
+  \ifluatex
+    \usepackage{fontspec}
+    \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+  \else
+    \usepackage[utf8]{inputenc}
+  \fi
+\fi
+\usepackage{listings}
+% Choose fonts
+\setsansfont[Path = fonts/ubuntu/, UprightFont = *-Regular, BoldFont = *-Bold, ItalicFont = *-Italic, BoldItalicFont = *-BoldItalic]{Ubuntu}
+\setmonofont[Path = fonts/ubuntumono/, UprightFont = *-Regular, BoldFont = *-Bold, ItalicFont = *-Italic, BoldItalicFont = *-BoldItalic]{UbuntuMono}
+% Comment these out if you don't want a slide with just the
+% part/section/subsection/subsubsection title:
+%\AtBeginPart{\frame{\partpage}}
+%\AtBeginSection{\frame{\sectionpage}}
+%\AtBeginSubsection{\frame{\subsectionpage}}
+%\AtBeginSubsubsection{\frame{\subsubsectionpage}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\setcounter{secnumdepth}{0}
+
+\title{High-Performance Garbage Collection in Rust}
+\author{Elliott Slaughter \textless{}slaughter@cs.stanford.edu\textgreater{}}
+\date{August 30, 2012}
+
+\newsavebox{\exampleone}
+\newsavebox{\exampletwo}
+\newsavebox{\examplethree}
+
+\begin{document}
+\frame{\titlepage}
+
+\begin{frame}\frametitle{Or, How to Hack LLVM's GC Support to Allow Us
+to Start Thinking About High-Performance GC in Rust}
+
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Rust in 3 Examples}
+
+\begin{itemize}
+  \item<alert@2> Fast
+  \item<alert@3> Safe
+  \item<alert@4> Concurrent
+\end{itemize}
+
+\begin{lrbox}{\exampleone}
+\begin{lstlisting}
+import io::println;
+
+fn main () {
+    for [1, 2, 3].each |i| {
+        println(i.to_str());
+    }
+}
+\end{lstlisting}
+\end{lrbox}
+
+\begin{lrbox}{\exampletwo}
+\begin{lstlisting}
+fn pointer_to_freed_memory() -> &int {
+    let x = @3;
+    return &*x; // Error!
+}
+
+fn main () {
+    pointer_to_freed_memory();
+}
+
+\end{lstlisting}
+\end{lrbox}
+
+\begin{lrbox}{\examplethree}
+\begin{lstlisting}
+use std;
+import io::println;
+import std::par::map;
+
+fn expensive_task(&&name: ~str) -> ~str {
+    return fmt!("Hi, %s!", name);
+}
+
+fn main () {
+    for map(~[~"Spam", ~"Eggs", ~"Ham"],
+            expensive_task).each |s| {
+        println(s);
+    }
+}
+\end{lstlisting}
+\end{lrbox}
+
+
+\only<2>{\usebox{\exampleone}}
+\only<3>{\usebox{\exampletwo}}
+\only<4>{\usebox{\examplethree}}
+
+\end{frame}
+
+\begin{frame}\frametitle{Why GC?}
+
+\begin{itemize}
+\item
+  Rust already has reference-counted types
+\item
+  Reference counting might not be as fast as you'd think
+\item
+  Secret weapon: Rust's memory model guarrantees isolation
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Doesn't LLVM already support GC?}
+
+\end{frame}
+
+\end{document}

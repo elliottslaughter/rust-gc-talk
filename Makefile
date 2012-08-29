@@ -1,6 +1,9 @@
-template = template.tex
-
+.PHONY: all
 all: talk.pdf
 
-%.pdf: %.md $(template)
-	pandoc --latex-engine lualatex --template template.tex --to beamer $< -o $@
+.PHONY: clean
+clean:
+	rm talk.pdf
+
+%.pdf: %.tex
+	lualatex $<
