@@ -3,7 +3,7 @@ all: talk.pdf
 
 .PHONY: clean
 clean:
-	rm talk.pdf
+	rm -f *.pdf *.aux *.log *.nav *.out *.snm *.toc *.vrb
 
 %.pdf: %.tex
 	lualatex $<
