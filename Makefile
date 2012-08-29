@@ -1,3 +1,5 @@
+code_listings=example1.rs example2.rs example3.rs
+
 .PHONY: all
 all: talk.pdf
 
@@ -5,5 +7,5 @@ all: talk.pdf
 clean:
 	rm -f *.pdf *.aux *.log *.nav *.out *.snm *.toc *.vrb
 
-%.pdf: %.tex
+%.pdf: %.tex $(code_listings)
 	lualatex $<

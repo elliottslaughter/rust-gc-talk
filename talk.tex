@@ -14,19 +14,32 @@
   \fi
 \fi
 \usepackage{listings}
-% Choose fonts
-\setsansfont[Path = fonts/ubuntu/, UprightFont = *-Regular, BoldFont = *-Bold, ItalicFont = *-Italic, BoldItalicFont = *-BoldItalic]{Ubuntu}
-\setmonofont[Path = fonts/ubuntumono/, UprightFont = *-Regular, BoldFont = *-Bold, ItalicFont = *-Italic, BoldItalicFont = *-BoldItalic]{UbuntuMono}
-% Comment these out if you don't want a slide with just the
-% part/section/subsection/subsubsection title:
-%\AtBeginPart{\frame{\partpage}}
-%\AtBeginSection{\frame{\sectionpage}}
-%\AtBeginSubsection{\frame{\subsectionpage}}
-%\AtBeginSubsubsection{\frame{\subsubsectionpage}}
+
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{6pt plus 2pt minus 1pt}
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 \setcounter{secnumdepth}{0}
+
+% Customize fonts
+\setsansfont[Path = fonts/ubuntu/, UprightFont = *-Regular, BoldFont = *-Bold, ItalicFont = *-Italic, BoldItalicFont = *-BoldItalic]{Ubuntu}
+\setmonofont[Path = fonts/ubuntumono/, UprightFont = *-Regular, BoldFont = *-Bold, ItalicFont = *-Italic, BoldItalicFont = *-BoldItalic]{UbuntuMono}
+
+% Customize presentation defaults
+\setbeamercolor{titlelike}{fg=black}
+\setbeamercolor{itemize item}{fg=black}
+\setbeamertemplate{navigation symbols}{}
+
+% Custom language highlighting for Rust
+\lstdefinelanguage{Rust}%
+  {morekeywords={again,assert,break,const,do,drop,else,enum,%
+      export,extern,fn,for,if,import,match,mod,new,return,%
+      struct,trait,type,use,while},%
+   sensitive,%
+   morecomment=[s]{/*}{*/},%
+   morecomment=[l]//,% nonstandard
+   morestring=[b]",%
+   morestring=[b]'%
+  }[keywords,comments,strings,directives]%
 
 \title{High-Performance Garbage Collection in Rust}
 \author{Elliott Slaughter \textless{}slaughter@cs.stanford.edu\textgreater{}}
@@ -38,10 +51,14 @@
 
 \begin{document}
 \frame{\titlepage}
+%\makeatletter
+%\def\@title{Something that's better to use as a variable}
+%\makeatother
+%\frame{\titlepage}
+\maketitle
 
 \begin{frame}\frametitle{Or, How to Hack LLVM's GC Support to Allow Us
 to Start Thinking About High-Performance GC in Rust}
-
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Rust in 3 Examples}
@@ -52,55 +69,9 @@ to Start Thinking About High-Performance GC in Rust}
   \item<alert@4> Concurrent
 \end{itemize}
 
-\begin{lrbox}{\exampleone}
-\begin{lstlisting}
-import io::println;
-
-fn main () {
-    for [1, 2, 3].each |i| {
-        println(i.to_str());
-    }
-}
-\end{lstlisting}
-\end{lrbox}
-
-\begin{lrbox}{\exampletwo}
-\begin{lstlisting}
-fn pointer_to_freed_memory() -> &int {
-    let x = @3;
-    return &*x; // Error!
-}
-
-fn main () {
-    pointer_to_freed_memory();
-}
-
-\end{lstlisting}
-\end{lrbox}
-
-\begin{lrbox}{\examplethree}
-\begin{lstlisting}
-use std;
-import io::println;
-import std::par::map;
-
-fn expensive_task(&&name: ~str) -> ~str {
-    return fmt!("Hi, %s!", name);
-}
-
-fn main () {
-    for map(~[~"Spam", ~"Eggs", ~"Ham"],
-            expensive_task).each |s| {
-        println(s);
-    }
-}
-\end{lstlisting}
-\end{lrbox}
-
-
-\only<2>{\usebox{\exampleone}}
-\only<3>{\usebox{\exampletwo}}
-\only<4>{\usebox{\examplethree}}
+\only<2>{\lstinputlisting[language=Rust]{example1.rs}}
+\only<3>{\lstinputlisting[language=Rust]{example2.rs}}
+\only<4>{\lstinputlisting[language=Rust]{example3.rs}}
 
 \end{frame}
 
