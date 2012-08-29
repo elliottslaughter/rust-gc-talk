@@ -14,6 +14,7 @@
   \fi
 \fi
 \usepackage{listings}
+\usepackage{color}
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{6pt plus 2pt minus 1pt}
@@ -41,7 +42,15 @@
    morestring=[b]'%
   }[keywords,comments,strings,directives]%
 
-\lstset{showstringspaces=false}
+\definecolor{darkblue}{rgb}{0,0,0.5}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+
+\lstset{%
+keywordstyle=\color{darkblue},
+commentstyle=\color{red},
+stringstyle=\color{darkgreen},
+showstringspaces=false%
+}
 
 \title{High-Performance Garbage Collection in Rust}
 \author{Elliott Slaughter \textless{}slaughter@cs.stanford.edu\textgreater{}}
