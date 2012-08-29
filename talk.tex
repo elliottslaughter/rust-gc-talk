@@ -33,8 +33,8 @@
 % Custom language highlighting for Rust
 \lstdefinelanguage{Rust}%
   {morekeywords={again,assert,break,const,do,drop,else,enum,%
-      export,extern,fn,for,if,import,match,mod,new,return,%
-      struct,trait,type,use,while},%
+      export,extern,fn,for,if,import,let,match,mod,new,%
+      return,struct,trait,type,use,while},%
    sensitive,%
    morecomment=[s]{/*}{*/},%
    morecomment=[l]//,% nonstandard
@@ -62,11 +62,6 @@ showstringspaces=false%
 
 \begin{document}
 \frame{\titlepage}
-%\makeatletter
-%\def\@title{Something that's better to use as a variable}
-%\makeatother
-%\frame{\titlepage}
-\maketitle
 
 \begin{frame}
 \Large\center{Or, How to Hack LLVM's GC Support to Allow Us
@@ -92,12 +87,9 @@ to Start Thinking About High-Performance GC in Rust}
 \begin{frame}\frametitle{Why GC?}
 
 \begin{itemize}
-\item
-  Rust already has reference-counted types
-\item
-  Reference counting might not be as fast as you'd think
-\item
-  Secret weapon: Rust's memory model guarrantees isolation
+  \item Rust already has reference-counted types
+  \item Reference counting might not be as fast as you'd think
+  \item Secret weapon: Rust's memory model guarrantees isolation
 \end{itemize}
 
 \end{frame}
