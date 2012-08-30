@@ -61,8 +61,19 @@ showstringspaces=false%
 \frame{\titlepage}
 
 \begin{frame}
-\Large\center{ Or, How to Hack LLVM's Support to Allow Us to Start
-  Thinking About High-Performance Garbage Collection in Rust }
+\Large\center{ Or, How to Hack LLVM to Allow Us to Start Thinking
+  About High-Performance Garbage Collection in Rust }
+\end{frame}
+
+\begin{frame}\frametitle{Adgenda}
+\Large
+\begin{itemize}
+  \item Rust
+  \item Garbage Collection
+  \item LLVM's Existing GC Support
+  \item Hacking LLVM
+  \item Win?
+\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Rust in 3 Contrived Examples}
@@ -80,6 +91,7 @@ showstringspaces=false%
 \end{frame}
 
 \begin{frame}\frametitle{Rust Memory Model}
+\large
 \begin{itemize}
   \item Exchange heap (\texttt{\char`~})
   \begin{itemize}
@@ -97,6 +109,7 @@ showstringspaces=false%
 \end{frame}
 
 \begin{frame}\frametitle{Why Garbage Collection?}
+\large
 \begin{itemize}
   \item Exchange heap (\texttt{\char`~})
   \begin{itemize}
@@ -114,6 +127,7 @@ showstringspaces=false%
 \end{frame}
 
 \begin{frame}\frametitle{Secret Weapon(s)}
+\large
 \begin{itemize}
   \item Only collect task-local heap
   \begin{itemize}
@@ -132,6 +146,7 @@ showstringspaces=false%
 \end{frame}
 
 \begin{frame}\frametitle{Garbage Collection Overview}
+\large
 \begin{itemize}
   \item<alert@2> Find pointers (roots) on stack
   \only<2->{\begin{itemize}
@@ -151,6 +166,7 @@ showstringspaces=false%
 \end{frame}
 
 \begin{frame}\frametitle{Existing LLVM GC Support}
+\large
 \begin{itemize}
   \item Feature complete, but slow
   \item Roots cannot be optimized
@@ -161,15 +177,17 @@ showstringspaces=false%
 \end{frame}
 
 \begin{frame}\frametitle{A ``Correct'' Approach}
+\large
 \begin{itemize}
-  \item Add an LLVM intrinsic to mark register roots
-  \item Teach all LLVM optimizations to handle this new intrinsic
+  \item Add an intrinsic to mark register roots
+  \item Teach optimizations about the new intrinsic
 \end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{A Hacky Alternative}
+\large
 \begin{itemize}
-  \item Do \emph{not} root pointers explicitly
+  \item Do \textbf{not} root pointers explicitly
   \item Infer roots after running machine-independent optimizations
   \item Add fake instructions to preserve register roots through machine-dependent optimizations
   \item Intercept fake instructions before emitting machine code
@@ -177,6 +195,7 @@ showstringspaces=false%
 \end{frame}
 
 \begin{frame}\frametitle{Current Status}
+\large
 \begin{itemize}
   \item Working on unoptimized Rust builds only
   \item Yes, I feel the irony
@@ -184,6 +203,7 @@ showstringspaces=false%
 \end{frame}
 
 \begin{frame}\frametitle{Thank You}
+\large
 \url{https://github.com/elliottslaughter/rust-gc-talk}
 \end{frame}
 
