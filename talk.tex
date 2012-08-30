@@ -153,8 +153,17 @@ showstringspaces=false%
 \begin{frame}\frametitle{Existing LLVM GC Support}
 \begin{itemize}
   \item Feature complete, but slow
-  \item Roots can \emph{never} be optimized
-  \item Existing languages (e.g. OCaml) keep all pointers on stack
+  \item Roots cannot be optimized
+  \begin{itemize}
+    \item Will never be moved into registers
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{A ``Correct'' Approach}
+\begin{itemize}
+  \item Add an LLVM intrinsic to mark register roots
+  \item Teach all LLVM optimizations to handle this new intrinsic
 \end{itemize}
 \end{frame}
 
