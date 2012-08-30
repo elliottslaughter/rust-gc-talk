@@ -81,13 +81,13 @@ showstringspaces=false%
 
 \begin{frame}\frametitle{Rust Memory Model}
 \begin{itemize}
-  \item Exchange heap
+  \item Exchange heap (\texttt{\char`~})
   \begin{itemize}
     \item Similar to \texttt{std::unique\_ptr} in C++11
     \item Exclusive ownership
     \item Move semantics
   \end{itemize}
-  \item Task-local heap
+  \item Task-local heap (\texttt{\char`@})
   \begin{itemize}
     \item Similar to \texttt{std::shared\_ptr} in C++
     \item Reference counted
@@ -98,13 +98,13 @@ showstringspaces=false%
 
 \begin{frame}\frametitle{Why Garbage Collection?}
 \begin{itemize}
-  \item Exchange heap
+  \item Exchange heap (\texttt{\char`~})
   \begin{itemize}
     \item Doesn't require GC, but\ldots
     \item Heap allocation requires locking
     \item Sometimes awkward
   \end{itemize}
-  \item Task-local heap
+  \item Task-local heap (\texttt{\char`@})
   \begin{itemize}
     \item Reference counting avoids GC, but\ldots
     \item Might not be as fast as you'd think
