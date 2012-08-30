@@ -1,6 +1,3 @@
-use std;
-import std::par;
-
 fn mangle(name: ~str) -> ~str {
     return fmt!("Hi, %s!", name);
 }
