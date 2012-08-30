@@ -83,13 +83,13 @@ showstringspaces=false%
 \begin{itemize}
   \item Exchange heap
   \begin{itemize}
-    \item Similar to C++11 \texttt{std::unique\_ptr}
+    \item Similar to \texttt{std::unique\_ptr} in C++11
     \item Exclusive ownership
     \item Move semantics
   \end{itemize}
   \item Task-local heap
   \begin{itemize}
-    \item Similar to C++ \texttt{std::shared\_ptr}
+    \item Similar to \texttt{std::shared\_ptr} in C++
     \item Reference counted
     \item Can't move between tasks
   \end{itemize}
@@ -100,35 +100,81 @@ showstringspaces=false%
 \begin{itemize}
   \item Exchange heap
   \begin{itemize}
-    \item Requires locking
+    \item Doesn't require GC, but\ldots
+    \item Heap allocation requires locking
     \item Sometimes awkward
   \end{itemize}
   \item Task-local heap
   \begin{itemize}
-    \item Reference counting might not be as fast as you'd think
-    \item Reference counting leaks cyclical references
+    \item Reference counting avoids GC, but\ldots
+    \item Might not be as fast as you'd think
+    \item Leaks cyclical references
   \end{itemize}
 \end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{Secret Weapon(s)}
 \begin{itemize}
-  \item Only need to collect the task-local heap
+  \item Only collect task-local heap
   \begin{itemize}
     \item No locks
     \item Never stop the world
   \end{itemize}
-  \item Optional, opt-in garbage collection
+  \item Optional, opt-in GC
   \begin{itemize}
     \item Static guarrantee that tasks never GC unless opted-in
+  \end{itemize}
+  \item Use GC where it makes sense
+  \begin{itemize}
+    \item High throughput, high latency
   \end{itemize}
 \end{itemize}
 \end{frame}
 
-\begin{frame}\frametitle{Doesn't LLVM already support GC?}
+\begin{frame}\frametitle{Garbage Collection Overview}
 \begin{itemize}
-  \item Yes, but\ldots
+  \item<alert@2> Find pointers (roots) on stack
+  \only<2->{\begin{itemize}
+    \item Compiler emits map from instruction to live roots
+    \item Stack walker looks up instruction to find roots
+  \end{itemize}}
+  \item<alert@3> Recusively walk roots to find all live objects
+  \only<3->{\begin{itemize}
+    \item Requires knowing the layout of objects on heap
+    \item Rust box types are self-describing
+  \end{itemize}}
+  \item<alert@4> Free everything else
+  \only<4->{\begin{itemize}
+    \item Allocator needs to keep list of all objects allocated
+  \end{itemize}}
 \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Existing LLVM GC Support}
+\begin{itemize}
+  \item Feature complete, but slow
+  \item Roots can \emph{never} be optimized
+  \item Existing languages (e.g. OCaml) keep all pointers on stack
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{A Hacky Alternative}
+\begin{itemize}
+  \item Do \emph{not} root pointers explicitly
+  \item Infer roots after running machine-independent optimizers
+  \item Pass fake machine instructions to preserve roots through machine-dependent optimizers
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Current Status}
+\begin{itemize}
+  \item Working on unoptimized Rust builds only
+  \item Yes, we feel the irony
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Thank You}
+\url{https://github.com/elliottslaughter/rust-gc-talk}
 \end{frame}
 
 \end{document}
