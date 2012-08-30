@@ -161,8 +161,9 @@ showstringspaces=false%
 \begin{frame}\frametitle{A Hacky Alternative}
 \begin{itemize}
   \item Do \emph{not} root pointers explicitly
-  \item Infer roots after running machine-independent optimizers
-  \item Pass fake machine instructions to preserve roots through machine-dependent optimizers
+  \item Infer roots after running machine-independent optimizations
+  \item Add fake instructions to preserve register roots through machine-dependent optimizations
+  \item Intercept fake instructions before emitting machine code
 \end{itemize}
 \end{frame}
 
