@@ -9,5 +9,9 @@ A research intern talk at Mozilla Research, August 30, 2012
   * [PDF](https://github.com/downloads/elliottslaughter/rust-gc-talk/rust-gc-talk-2012-08-30.pdf)
   * [LaTeX](https://raw.github.com/elliottslaughter/rust-gc-talk/master/talk.tex)
 
+I also wrote more detailed implementation notes, available here:
+
+  * [Detailed Implementation Notes](https://github.com/elliottslaughter/rust-gc-notes)
+
 The files in this repository are made available under the [MIT
 license](http://opensource.org/licenses/mit-license.php).
